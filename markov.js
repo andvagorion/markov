@@ -79,6 +79,10 @@ var MarkovChars = (function() {
 			_word += ")";
 		}
 
+		if (input.indexOf(_word) >= 0) {
+			return create(depth);
+		}
+
 		return _word;
 	}
 
@@ -113,7 +117,10 @@ var MarkovChars = (function() {
 })();
 
 
-createWords(5);
+createWords(3);
+createWords(3);
+createWords(3);
+createWords(3);
 
 //createWords(5);
 
@@ -127,7 +134,7 @@ function createWords(depth) {
 
 	let ul = document.createElement("ul");
 
-	for (let i = 0; i < 25; i++) {
+	for (let i = 0; i < 10; i++) {
 		let el = MarkovChars.create(depth);
 		let li = document.createElement("li");
 		li.innerHTML = el;
