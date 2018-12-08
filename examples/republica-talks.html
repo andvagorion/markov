@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <script src="republica-talks.js"></script>
+  <script src="../markov.js"></script>
+
+  <script type="text/javascript">
+
+    const num = 25;
+    const depth = 5;
+    const maxLength = 250;
+
+    let ul = document.createElement("ul");
+
+    for (let i = 0; i < num; i++) {
+      let el = MarkovChars.create(depth, maxLength);
+      let li = document.createElement("li");
+      li.innerHTML = el;
+      ul.appendChild(li);
+    }
+
+    document.body.appendChild(ul);
+  </script>
+
+</body>
+</html>

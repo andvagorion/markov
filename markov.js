@@ -7,7 +7,7 @@ var MarkovChars = (function() {
 	var graph = {};
 
 	function init(depth) {
-		
+
 		let _len = len = input.length;
 		for (let i = 0; i < _len; i++) {
 			let _word = input[i];
@@ -15,22 +15,19 @@ var MarkovChars = (function() {
 			// first letter
 			let _first = _word.charAt(0);
 			increment(start, _first);
-			
+
 			let max = _word.length;
 			for (let j = 1; j <= max; j++) {
 				let _chars = _word.slice(Math.max(0, j - depth), j);
 				createIfNotExists(graph, _chars);
-			
+
 				if (j + 1 > max) {
-					//console.log("END at " + _chars + " of " + _word);
 					increment(graph[_chars], "END");
 				} else {
 					let _next = _word.slice(j, j + 1);
 					increment(graph[_chars], _next);
 				}
-
 			}
-			
 		}
 	}
 
@@ -48,7 +45,7 @@ var MarkovChars = (function() {
 		}
 	}
 
-	function create(depth) {
+	function create(depth, maxLength) {
 		if (depth > initalizedForDepth) {
 			initalized = false;
 		}
@@ -60,10 +57,10 @@ var MarkovChars = (function() {
 		}
 
 		let _word = "" + randomFrom(start);
-		
+
 		let _next = "";
 
-		while (_next != "END" && _word.length < 250) {
+		while (_next != "END" && _word.length < maxLength) {
 			_word += _next;
 			let _curr = _word.slice(-depth);
 			_next = randomFrom(graph[_curr]);
@@ -74,13 +71,13 @@ var MarkovChars = (function() {
 				_next = "END";
 			}
 		}
-		
+
 		if (_word.indexOf("(") >= 0 && _word.indexOf(")") < 0){
 			_word += ")";
 		}
 
 		if (input.indexOf(_word) >= 0) {
-			return create(depth);
+			return create(depth, maxLength);
 		}
 
 		return _word;
@@ -108,40 +105,10 @@ var MarkovChars = (function() {
 		max = Math.floor(max);
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
-	
+
 	return {
 		init: init,
 		create: create
 	}
 
 })();
-
-
-createWords(3);
-createWords(3);
-createWords(3);
-createWords(3);
-
-//createWords(5);
-
-function createWords(depth) {
-
-	let div = document.createElement("div");
-	div.style.display = "inline-block";
-	//let h1 = document.createElement("h1");
-	//h1.innerHTML = "Depth " + depth;
-	//div.appendChild(h1);
-
-	let ul = document.createElement("ul");
-
-	for (let i = 0; i < 10; i++) {
-		let el = MarkovChars.create(depth);
-		let li = document.createElement("li");
-		li.innerHTML = el;
-		ul.appendChild(li);
-	}
-
-	div.appendChild(ul);
-	document.body.appendChild(div);
-
-}
